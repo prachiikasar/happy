@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700&family=Mali:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom CSS */
+        .hidden { display: none; }
+        .cake-container {
+            perspective: 1000px;
+            margin-top: 3rem;
+            display: flex;
+            justify-content: center;
+        }
+        .cake {
+            width: 200px;
+            height: 150px;
+            background-color: #fce883; /* Soft Yellow */
+            border-radius: 10px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotateCake 7s infinite linear;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        @keyframes rotateCake {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+        .layer {
+            position: absolute;
+            width: 100%;
+            height: 30px;
+            border-radius: 6px;
+            background-color: #ffabab; /* Light Pink */
+            bottom: 0;
+            transform-origin: 50% 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .layer:nth-child(2) {
+            bottom: 30px;
+            height: 25px;
+            background-color: #ffc8b2;
+        }
+        .layer:nth-child(3) {
+            bottom: 55px;
+            height: 20px;
+            background-color: #ffe7d4;
+        }
+        .candle {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 50px;
+            background-color: #fff;
+            border-radius: 4px 4px 0 0;
+            animation: flicker 2s infinite, bobCandle 4s infinite alternate;
+            transform-origin: 50% 100%;
+            box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        @keyframes flicker {
+            0%, 20%, 40%, 60%, 80%, 100% { opacity: 1; }
+            10%, 30%, 50%, 70%, 90% { opacity: 0.7; }
+        }
+        @keyframes bobCandle {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-3px); }
+        }
+        .flame {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-bottom: 15px solid #f9d71c; /* Yellow */
+            border-radius: 50%;
+            animation: flameFlicker 0.5s infinite, pulseFlame 2s infinite alternate;
+            transform-origin: 50% 100%;
+        }
+        @keyframes flameFlicker {
+            0%, 50%, 100% { transform: translateY(0) scaleY(1); opacity: 1; }
+            25% { transform: translateY(-2px) scaleY(1.1); opacity: 0.9; }
+            75% { transform: translateY(2px) scaleY(0.9); opacity: 0.95; }
+        }
+        @keyframes pulseFlame {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+        .message-box {
+            background-color: rgba(240, 84, 84, 0.8);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        .wish-button {
+            padding: 0.7rem 1.5rem;
+            border-radius: 6px;
+            background-color: #ff6f91; /* Pink */
+            color: #fff;
+            font-family: 'Mali', cursive;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin: 0 0.75rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+        .wish-button:hover {
+            background-color: #f43f85;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            transform: translateY(-1px);
+        }
+        .slider-container {
+            margin-top: 2rem;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+        .image-slide {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .image-slide img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px; /* Rounded corners for images */
+        }
+        .slider-navigation {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 0.5rem;
+            transform: translateY(-50%);
+        }
+        .slider-navigation button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Added text shadow */
+
+        }
+        .slider-navigation button:hover {
+            opacity: 1;
+        }
+        .audio-container {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        audio {
+           width: 1px;
+           height: 1px;
+           opacity: 0;
+           position: absolute;
+           top: -100px;
+           left: -100px;
+        }
+        .birthday-wishes {
+            background-color: rgba(217, 190, 190, 0.8);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            font-size: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(238, 221, 221, 0.2);
+            max-width: 80%;
+            font-family: 'Nunito Sans', sans-serif; /* Changed font */
+            color: #555; /* Darker text */
+        }
+        .birthday-date-container {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ff6f91; /* Pink */
+            border: 1px solid rgba(255,255,255,0.2);
+            font-family: 'Mali', cursive;
+        }
+        .birthday-date-container h2 {
+            font-size: 1.3rem;
+            color: #f43f85;
+            margin-bottom: 0.3rem;
+        }
+
+        #play-music-button {
+            position: fixed;
+            top: 45%; /* Increased top to move it up */
+            right: 20px;
+            transform: translateY(-50%);
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            background-color: #ff6f91;
+            color: #fff;
+            font-family: 'Mali', cursive;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: none;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        #play-music-button:hover {
+            background-color: #f43f85;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .music-disc {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background-color: #000;
+            animation: rotateDisc 3s linear infinite;
+            border: 0.2rem solid #333;
+            box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .music-disc::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0.6rem;
+            height: 0.6rem;
+            border-radius: 50%;
+            background-color: #fff;
+        }
+
+        @keyframes rotateDisc {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body class="bg-gradient-to-r from-pink-200 to-purple-300 text-white font-family-sans text-center">
+    <header class="py-6">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold font-['Mali'] text-pink-600 mb-4">Happy Birthday, Bamu!</h1>
+        <p class="text-lg sm:text-xl max-w-3xl mx-auto">Celebrating your special day with awesome memories and tunes!</p>
+    </header>
+
+    <main class="container mx-auto px-4">
+        <div class="cake-container">
+            <div class="cake">
+                <div class="layer"></div>
+                <div class="layer"></div>
+                <div class="layer"></div>
+                <div class="candle">
+                    <div class="flame"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="message-box" id="initial-message">
+            <p>Happy Birthday 🎉</p>
+            <p>Wishing you an amazing day filled with fun, laughter, and everything you love!</p>
+        </div>
+
+        <div class="button-group">
+            <button class="wish-button" id="show-gallery">Show Gallery</button>
+        </div>
+
+        <div class="slider-container hidden" id="image-gallery">
+            <div class="image-slide" id="slide">
+            </div>
+            <div class="slider-navigation">
+                <button onclick="prevSlide()">❮</button>
+                <button onclick="nextSlide()">❯</button>
+            </div>
+        </div>
+
+        <div class="audio-container">
+            <div class="birthday-wishes">
+                <p>🎂🎀 Happy Birthday cutiee 🎉 Hope you have a day filled with fun and yummy treats! 🎈🎁</p>
+            </div>
+            <audio id="birthday-song"  loop >
+                <source src="happy_birthday.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+
+        <div class="birthday-date-container">
+            <h2>Birthday Date</h2>
+            <p>April 25th</p>
+        </div>
+        <button id="play-music-button">
+            <div class="music-disc"></div>
+            Play Music
+        </button>
+    </main>
+
+    <script>
+        // Get references to elements
+        const imageGallery = document.getElementById('image-gallery');
+        const showGalleryButton = document.getElementById('show-gallery');
+        const imageSlide = document.getElementById('slide');
+        const birthdaySong = document.getElementById('birthday-song');
+        const playMusicButton = document.getElementById('play-music-button');
+
+
+        let currentIndex = 0;
+
+        // Image paths (replace with your actual image paths)
+        const images = [
+            'image2.jpg',
+        ];
+
+        // Function to update the image slider
+        function updateSlider() {
+            imageSlide.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        // Next slide function
+        function nextSlide() {
+        currentIndex = (currentIndex + 1) % images.length;
+        updateSlider();
+        }
+
+        // Previous slide function
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            updateSlider();
+        }
+
+        // Add images to the slider
+        images.forEach(image => {
+            const imgElement = document.createElement('img');
+            imgElement.src = image;
+            imgElement.alt = 'Birthday Memory';
+            imageSlide.appendChild(imgElement);
+        });
+
+        // Set the width of the image slide container
+        imageSlide.style.width = `${images.length * 100}%`;
+
+        // Event listener for the show gallery button
+        showGalleryButton.addEventListener('click', () => {
+            imageGallery.classList.toggle('hidden');
+
+        });
+
+        playMusicButton.addEventListener('click', () => {
+            birthdaySong.play().catch(e => {
+                console.error("Error playing audio: ", e);
+            });
+        });
+
+
+
+    </script>
+</body>
+</html>
